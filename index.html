@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="AI-powered home renovation assistant using Nano Banana Pro. Upload your room, choose a style, and visualize stunning renovations instantly.">
+  <title>RenovateAI — AI Home Renovation Agent | Nano Banana Pro</title>
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+  <!-- ==================== Country Selection Popup ==================== -->
+  <div class="popup-overlay active" id="countryPopup">
+    <div class="popup-container">
+      <div class="popup-header">
+        <div class="popup-icon">🌍</div>
+        <h2 class="popup-title">Welcome to <span class="gradient-text">RenovateAI</span></h2>
+        <p class="popup-subtitle">Select your country or the design origin you'd like to apply to your home renovation.
+        </p>
+      </div>
+      <div class="popup-search">
+        <input type="text" class="popup-search-input" id="countrySearch" placeholder="🔍  Search country...">
+      </div>
+      <div class="country-grid" id="countryGrid">
+        <div class="country-card" data-country="india" data-flag="🇮🇳" data-currency="INR" data-symbol="₹"
+          data-rate="83.5">
+          <span class="country-flag">🇮🇳</span>
+          <span class="country-name">India</span>
+          <span class="country-currency">₹ INR</span>
+        </div>
+        <div class="country-card" data-country="usa" data-flag="🇺🇸" data-currency="USD" data-symbol="$" data-rate="1">
+          <span class="country-flag">🇺🇸</span>
+          <span class="country-name">United States</span>
+          <span class="country-currency">$ USD</span>
+        </div>
+        <div class="country-card" data-country="china" data-flag="🇨🇳" data-currency="CNY" data-symbol="¥"
+          data-rate="7.25">
+          <span class="country-flag">🇨🇳</span>
+          <span class="country-name">China</span>
+          <span class="country-currency">¥ CNY</span>
+        </div>
+        <div class="country-card" data-country="japan" data-flag="🇯🇵" data-currency="JPY" data-symbol="¥"
+          data-rate="149.5">
+          <span class="country-flag">🇯🇵</span>
+          <span class="country-name">Japan</span>
+          <span class="country-currency">¥ JPY</span>
+        </div>
+        <div class="country-card" data-country="uk" data-flag="🇬🇧" data-currency="GBP" data-symbol="£"
+          data-rate="0.79">
+          <span class="country-flag">🇬🇧</span>
+          <span class="country-name">United Kingdom</span>
+          <span class="country-currency">£ GBP</span>
+        </div>
+        <div class="country-card" data-country="germany" data-flag="🇩🇪" data-currency="EUR" data-symbol="€"
+          data-rate="0.92">
+          <span class="country-flag">🇩🇪</span>
+          <span class="country-name">Germany</span>
+          <span class="country-currency">€ EUR</span>
+        </div>
+        <div class="country-card" data-country="france" data-flag="🇫🇷" data-currency="EUR" data-symbol="€"
+          data-rate="0.92">
+          <span class="country-flag">🇫🇷</span>
+          <span class="country-name">France</span>
+          <span class="country-currency">€ EUR</span>
+        </div>
+        <div class="country-card" data-country="australia" data-flag="🇦🇺" data-currency="AUD" data-symbol="A$"
+          data-rate="1.53">
+          <span class="country-flag">🇦🇺</span>
+          <span class="country-name">Australia</span>
+          <span class="country-currency">A$ AUD</span>
+        </div>
+        <div class="country-card" data-country="canada" data-flag="🇨🇦" data-currency="CAD" data-symbol="C$"
+          data-rate="1.36">
+          <span class="country-flag">🇨🇦</span>
+          <span class="country-name">Canada</span>
+          <span class="country-currency">C$ CAD</span>
+        </div>
+        <div class="country-card" data-country="brazil" data-flag="🇧🇷" data-currency="BRL" data-symbol="R$"
+          data-rate="4.97">
+          <span class="country-flag">🇧🇷</span>
+          <span class="country-name">Brazil</span>
+          <span class="country-currency">R$ BRL</span>
+        </div>
+        <div class="country-card" data-country="southkorea" data-flag="🇰🇷" data-currency="KRW" data-symbol="₩"
+          data-rate="1320">
+          <span class="country-flag">🇰🇷</span>
+          <span class="country-name">South Korea</span>
+          <span class="country-currency">₩ KRW</span>
+        </div>
+        <div class="country-card" data-country="uae" data-flag="🇦🇪" data-currency="AED" data-symbol="د.إ"
+          data-rate="3.67">
+          <span class="country-flag">🇦🇪</span>
+          <span class="country-name">UAE</span>
+          <span class="country-currency">د.إ AED</span>
+        </div>
+        <div class="country-card" data-country="saudiarabia" data-flag="🇸🇦" data-currency="SAR" data-symbol="﷼"
+          data-rate="3.75">
+          <span class="country-flag">🇸🇦</span>
+          <span class="country-name">Saudi Arabia</span>
+          <span class="country-currency">﷼ SAR</span>
+        </div>
+        <div class="country-card" data-country="mexico" data-flag="🇲🇽" data-currency="MXN" data-symbol="MX$"
+          data-rate="17.1">
+          <span class="country-flag">🇲🇽</span>
+          <span class="country-name">Mexico</span>
+          <span class="country-currency">MX$ MXN</span>
+        </div>
+        <div class="country-card" data-country="singapore" data-flag="🇸🇬" data-currency="SGD" data-symbol="S$"
+          data-rate="1.34">
+          <span class="country-flag">🇸🇬</span>
+          <span class="country-name">Singapore</span>
+          <span class="country-currency">S$ SGD</span>
+        </div>
+      </div>
+      <button class="popup-continue-btn" id="popupContinueBtn" disabled>
+        🚀 Continue to RenovateAI
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== Navigation ==================== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="nav-logo">
+        <div class="logo-icon">🏠</div>
+        <span>Renovate<span class="logo-text-highlight">AI</span></span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+        <li><a href="#tool" class="nav-link active">Design Tool</a></li>
+        <li><a href="#projects" class="nav-link">My Projects</a></li>
+        <li><a href="#gallery" class="nav-link">Gallery</a></li>
+        <li class="nav-dropdown">
+          <a href="#" class="nav-link nav-more-btn">More ▾</a>
+          <div class="nav-dropdown-menu">
+            <a href="#roomplanner" class="nav-link">📐 Room Planner</a>
+            <a href="#materials" class="nav-link">🪵 Materials</a>
+            <a href="#contractors" class="nav-link">👷 Contractors</a>
+            <a href="#timeline" class="nav-link">📅 Timeline</a>
+            <a href="#arpreview" class="nav-link">📱 AR Preview</a>
+          </div>
+        </li>
+        <li>
+          <button class="nav-country-badge" id="navCountryBadge" title="Change country">
+            <span id="navCountryFlag">🌍</span>
+            <span id="navCountryCurrency"></span>
+          </button>
+        </li>
+        <li>
+          <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme"
+            style="background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-primary); padding: 4px;">
+            <span id="themeIcon">☀️</span>
+          </button>
+        </li>
+      </ul>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ==================== Toast Container ==================== -->
+  <div id="toastContainer"></div>
+
+  <!-- ==================== SPA Main Container ==================== -->
+  <main id="app-container">
+
+    <!-- ========== PAGE: DESIGN TOOL (Default) ========== -->
+    <div id="page-tool" class="spa-page active">
+      <!-- ==================== Hero Section ==================== -->
+      <section class="hero section" id="hero">
+        <div class="hero-bg">
+          <img src="assets/hero-bg.png" alt="Modern renovated home interior">
+        </div>
+        <div class="container">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="badge-dot"></span>
+              Powered by Nano Banana Pro
+            </div>
+            <h1 class="hero-title">
+              Reimagine Your Home<br>
+              With <span class="gradient-text">AI Magic</span>
+            </h1>
+            <p class="hero-description">
+              Upload a photo of any room and watch our AI transform it into your dream space. Choose from dozens of
+              styles,
+              get instant cost estimates, and visualize renovations before spending a dime.
+            </p>
+            <div class="hero-actions">
+              <a href="#upload" class="btn-primary">
+                🚀 Start Renovating
+              </a>
+              <a href="#features" class="btn-secondary">
+                ✨ Explore Features
+              </a>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-number">50K+</div>
+                <div class="hero-stat-label">Rooms Transformed</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-number">12</div>
+                <div class="hero-stat-label">Design Styles</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-number">98%</div>
+                <div class="hero-stat-label">Satisfaction Rate</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-visual-card">
+              <img src="assets/after.png" alt="AI renovated living room">
+              <div class="hero-visual-overlay">
+                <h4>✨ AI-Generated Design</h4>
+                <p>Modern Minimalist · Living Room</p>
+              </div>
+            </div>
+            <div class="hero-floating-card top-right">
+              <div class="floating-label">Style Match</div>
+              <div class="floating-value">97.4%</div>
+            </div>
+            <div class="hero-floating-card bottom-left">
+              <div class="floating-label">Est. Cost</div>
+              <div class="floating-value" id="heroEstCost">$12,400</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== Features Section ==================== -->
+      <section class="features section" id="features">
+        <div class="container">
+          <div class="features-header animate-on-scroll">
+            <span class="section-label">What We Offer</span>
+            <h2 class="section-title">Intelligent Renovation <span class="gradient-text">Tools</span></h2>
+            <p class="section-subtitle">Our suite of AI-powered tools makes redesigning any room effortless, from
+              analysis
+              to visualization.</p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card animate-on-scroll">
+              <div class="feature-icon amber">📷</div>
+              <h3>Room Analysis</h3>
+              <p>Upload a photo and AI instantly detects room type, dimensions, furniture, lighting conditions, and
+                areas
+                that need renovation.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+              <div class="feature-icon purple">🎨</div>
+              <h3>Style Transfer</h3>
+              <p>Apply any design style — Modern, Industrial, Scandinavian, Bohemian — onto your existing room with
+                photorealistic results.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+              <div class="feature-icon blue">💰</div>
+              <h3>Cost Estimation</h3>
+              <p>Get instant, itemized cost breakdowns based on room size, renovation depth, and material quality
+                preferences.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+              <div class="feature-icon emerald">🔮</div>
+              <h3>3D Preview</h3>
+              <p>Walk through your renovated space in an immersive 3D preview before committing to any changes or
+                purchases.
+              </p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+              <div class="feature-icon coral">🎯</div>
+              <h3>Color Palette</h3>
+              <p>Extract and suggest harmonious color palettes from inspirational images or let AI curate the perfect
+                scheme
+                for your room.</p>
+            </div>
+            <div class="feature-card animate-on-scroll">
+              <div class="feature-icon rose">🛋️</div>
+              <h3>Smart Furniture</h3>
+              <p>AI recommends furniture pieces that match your chosen style, fit your room dimensions, and stay within
+                your
+                budget.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== Upload & Analysis Section ==================== -->
+      <section class="upload-section section" id="upload">
+        <div class="container">
+          <div class="upload-header animate-on-scroll"
+            style="text-align: center; max-width: 800px; margin: 0 auto var(--space-2xl);">
+            <span class="section-label">Room Analysis</span>
+            <h2 class="section-title">Upload Your <span class="gradient-text">Room</span></h2>
+            <p class="section-subtitle">Drag and drop a photo of any room and our AI will analyze it in seconds,
+              identifying
+              key features and suggesting improvements.</p>
+          </div>
+
+          <div class="upload-grid" id="uploadGrid">
+            <div class="upload-content animate-on-scroll">
+              <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">📁</div>
+                <h3>Drag &amp; Drop Your Room Photo</h3>
+                <p>or click to browse — supports JPG, PNG, WEBP</p>
+                <button class="upload-btn" type="button">📤 Choose File</button>
+                <input type="file" id="fileInput" accept="image/*" hidden>
+              </div>
+
+              <div class="upload-preview" id="uploadPreview"
+                style="position: relative; overflow: hidden; border-radius: 16px;">
+                <img id="previewImage" src="" alt="Uploaded room preview"
+                  style="width: 100%; height: 100%; object-fit: cover;">
+
+                <!-- Scanning Animation Overlay -->
+                <div id="scanningOverlay" class="scanning-overlay">
+                  <div class="scan-line"></div>
+                  <div class="scan-grid"></div>
+                  <div class="scan-text">
+                    <span class="pulse-dot"></span> Analyzing Spatial Geometry...
+                  </div>
+                  <div class="scan-progress-bar">
+                    <div class="scan-progress-fill" id="scanProgressFill"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="analysis-results" id="analysisResults" style="display: none;">
+              <div class="analysis-card animate-on-scroll">
+                <h4>🏠 Room Detection</h4>
+                <div class="analysis-item">
+                  <span class="label">Room Type</span>
+                  <span class="value" id="roomType">—</span>
+                </div>
+                <div class="analysis-item">
+                  <span class="label">Estimated Size</span>
+                  <span class="value" id="roomSize">—</span>
+                </div>
+                <div class="analysis-item">
+                  <span class="label">Natural Light</span>
+                  <span class="value" id="roomLight">—</span>
+                </div>
+              </div>
+
+              <div class="analysis-card animate-on-scroll">
+                <h4>🎨 Extracted Color Palette</h4>
+                <div id="colorPaletteSwatches" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+              </div>
+
+              <div class="analysis-card animate-on-scroll">
+                <h4>📊 Condition Assessment</h4>
+                <div class="analysis-item">
+                  <span class="label">Overall Condition</span>
+                  <span class="value good" id="roomCondition">—</span>
+                </div>
+                <div class="analysis-item">
+                  <span class="label">Walls</span>
+                  <span class="value" id="wallCondition">—</span>
+                </div>
+                <div class="analysis-item">
+                  <span class="label">Flooring</span>
+                  <span class="value" id="floorCondition">—</span>
+                </div>
+                <div class="analysis-progress">
+                  <span class="label" style="font-size:0.85rem;color:var(--text-secondary);">Renovation Potential</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill" id="renoProgress" style="width:0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="analysis-card animate-on-scroll">
+                <h4>💡 AI Suggestions <span class="ai-hint">(optional — dismiss any you don't want)</span></h4>
+                <div class="analysis-tags" id="suggestionTags"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ai-interaction-panel" id="aiInteractionPanel" style="display: none; margin-top: var(--space-lg);">
+            <!-- AI Suggestion Chips (dismissible) -->
+            <div class="analysis-card ai-suggestions-card animate-on-scroll" id="aiSuggestionsCard">
+              <h4>🤖 AI Recommendations <span class="ai-hint">— feel free to ignore these!</span></h4>
+              <p class="ai-suggestions-intro">Based on our analysis, here are some ideas. Click ✕ to dismiss any you
+                don't
+                like:</p>
+              <div class="ai-suggestion-chips" id="aiSuggestionChips"></div>
+            </div>
+
+            <!-- Tell AI What You Want -->
+            <div class="analysis-card instruction-panel animate-on-scroll" id="instructionPanel">
+              <h4>✍️ Tell AI What You Want</h4>
+              <p class="instruction-hint">Describe in plain English what you'd like — object placements, adjustments,
+                additions, removals. Be as specific or vague as you want!</p>
+              <textarea class="instruction-textarea" id="instructionTextarea"
+                placeholder="e.g. Place a brown leather sofa near the window, add indoor plants on the corner table, change the flooring to warm oak wood, put a modern bookshelf on the left wall..."></textarea>
+              <div class="instruction-actions">
+                <button class="btn-primary instruction-submit" id="instructionSubmit" type="button">
+                  🧠 Generate AI Renovation Plan
+                </button>
+              </div>
+              <div class="instruction-result" id="instructionResult"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== Style Selector Section ==================== -->
+      <section class="styles-section section" id="styles">
+        <div class="container">
+          <div class="styles-header animate-on-scroll">
+            <span class="section-label">Choose a Style</span>
+            <h2 class="section-title">Renovation <span class="gradient-text">Styles</span></h2>
+            <p class="section-subtitle">AI has suggested a style based on your room — but it's your call! Pick any
+              design
+              aesthetic you prefer.</p>
+          </div>
+          <div class="styles-grid">
+
+            <div class="style-card animate-on-scroll" data-style="modern">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image"
+                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&q=80" alt="Modern Minimalist">
+              <div class="style-card-overlay">
+                <h4>Modern Minimalist</h4>
+                <p>Clean lines, neutral tones, open space</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+            <div class="style-card animate-on-scroll" data-style="industrial">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image"
+                src="https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400&q=80" alt="Industrial Loft">
+              <div class="style-card-overlay">
+                <h4>Industrial Loft</h4>
+                <p>Exposed brick, metal accents, raw charm</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+            <div class="style-card animate-on-scroll" data-style="scandinavian">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image"
+                src="https://images.unsplash.com/photo-1593696140826-c58b021acf8b?w=400&q=80" alt="Scandinavian">
+              <div class="style-card-overlay">
+                <h4>Scandinavian</h4>
+                <p>Warm wood, cozy textiles, hygge vibes</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+            <div class="style-card animate-on-scroll" data-style="bohemian">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image"
+                src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&q=80" alt="Bohemian">
+              <div class="style-card-overlay">
+                <h4>Bohemian</h4>
+                <p>Eclectic patterns, rich colors, layered textures</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+            <div class="style-card animate-on-scroll" data-style="japandi">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image"
+                src="https://images.unsplash.com/photo-1600607688969-a5bfcd64bd28?w=400&q=80" alt="Japandi">
+              <div class="style-card-overlay">
+                <h4>Japandi</h4>
+                <p>Japanese meets Scandinavian serenity</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+            <div class="style-card animate-on-scroll" data-style="coastal">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image"
+                src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80" alt="Coastal">
+              <div class="style-card-overlay">
+                <h4>Coastal</h4>
+                <p>Ocean hues, natural fibers, breezy feel</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+            <div class="style-card animate-on-scroll" data-style="artdeco">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image"
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80" alt="Art Deco">
+              <div class="style-card-overlay">
+                <h4>Art Deco</h4>
+                <p>Geometric glamour, gold accents, luxury</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+            <div class="style-card animate-on-scroll" data-style="midcentury">
+              <div class="ai-suggested-badge" style="display:none;">🤖 AI Suggested</div>
+              <img class="style-card-image" src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?w=400&q=80"
+                alt="Mid-Century Modern">
+              <div class="style-card-overlay">
+                <h4>Mid-Century Modern</h4>
+                <p>Retro warmth, organic curves, iconic pieces</p>
+              </div>
+              <div class="selected-badge">✓</div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== Nano Banana Pro Image Modifier Result ==================== -->
+      <section class="before-after section" id="compare">
+        <div class="container">
+          <div class="before-after-header animate-on-scroll">
+            <span class="section-label">AI Rendered</span>
+            <h2 class="section-title">Nano Banana Pro <span class="gradient-text">Result</span></h2>
+            <p class="section-subtitle">Your exact suggestions and instructions applied directly to the image.</p>
+          </div>
+          <div class="result-container animate-on-scroll" id="resultContainer"
+            style="position:relative;max-width:900px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:1px solid var(--border-color);">
+            <div class="nano-badge"
+              style="position:absolute;top:20px;left:20px;z-index:10;background:var(--gradient-primary);color:#000;font-weight:700;padding:6px 12px;border-radius:20px;font-size:0.8rem;box-shadow:0 4px 15px var(--accent-amber);">
+              ✨ Built by Nano Banana Pro</div>
+            <img id="finalResultImage" src="assets/after.png" alt="Renovated Result"
+              style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;">
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== Cost Estimator Section ==================== -->
+      <section class="cost-estimator section" id="estimator">
+        <div class="container">
+          <div class="cost-estimator-header animate-on-scroll">
+            <span class="section-label">Budget Planner</span>
+            <h2 class="section-title">Renovation <span class="gradient-text">Cost Estimator</span></h2>
+            <p class="section-subtitle">Adjust the sliders to get an instant estimate tailored to your room size,
+              renovation
+              depth, and material preferences. <strong>Costs shown in <span id="estimatorCurrencyLabel">$
+                  USD</span></strong>.</p>
+          </div>
+          <div class="estimator-grid">
+
+            <div class="estimator-controls animate-on-scroll">
+              <div class="estimator-control">
+                <label>
+                  Room Size
+                  <span id="roomSizeValue">250 sq ft</span>
+                </label>
+                <input type="range" class="range-slider" id="roomSizeSlider" min="50" max="800" value="250" step="10">
+                <div class="range-labels"><span>50 sq ft</span><span>800 sq ft</span></div>
+              </div>
+
+              <div class="estimator-control">
+                <label>
+                  Renovation Depth
+                  <span id="renoDepthValue">Medium</span>
+                </label>
+                <input type="range" class="range-slider" id="renoDepthSlider" min="1" max="3" value="2" step="1">
+                <div class="range-labels"><span>Light</span><span>Medium</span><span>Full</span></div>
+              </div>
+
+              <div class="estimator-control">
+                <label>
+                  Material Quality
+                  <span id="materialValue">Standard</span>
+                </label>
+                <input type="range" class="range-slider" id="materialSlider" min="1" max="3" value="2" step="1">
+                <div class="range-labels"><span>Economy</span><span>Standard</span><span>Premium</span></div>
+              </div>
+            </div>
+
+            <div class="cost-summary animate-on-scroll">
+              <h3>💰 Cost Breakdown</h3>
+              <div class="cost-breakdown">
+                <div class="cost-item">
+                  <span class="cost-label">Materials</span>
+                  <span class="cost-value" id="costMaterials">$3,750</span>
+                </div>
+                <div class="cost-item">
+                  <span class="cost-label">Labor</span>
+                  <span class="cost-value" id="costLabor">$2,500</span>
+                </div>
+                <div class="cost-item">
+                  <span class="cost-label">Design Fee</span>
+                  <span class="cost-value" id="costDesign">$500</span>
+                </div>
+                <div class="cost-item">
+                  <span class="cost-label">Contingency (10%)</span>
+                  <span class="cost-value" id="costContingency">$675</span>
+                </div>
+              </div>
+              <div class="cost-total">
+                <span class="total-label">Estimated Total</span>
+                <span class="total-value" id="costTotal">$7,425</span>
+              </div>
+              <button class="cost-cta" type="button"
+                onclick="document.getElementById('chat').scrollIntoView({behavior:'smooth'})">
+                💬 Discuss With AI Assistant
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== AI Chat Section ==================== -->
+      <section class="chat-section section" id="chat">
+        <div class="container">
+          <div class="chat-header animate-on-scroll">
+            <span class="section-label">AI Assistant</span>
+            <h2 class="section-title">Chat with <span class="gradient-text">Nano Banana Pro</span></h2>
+            <p class="section-subtitle">Ask questions about renovation ideas, costs, materials, or let the AI generate
+              design concepts for you.</p>
+          </div>
+          <div class="chat-container animate-on-scroll">
+            <div class="chat-window" id="chatWindow">
+              <div class="chat-message ai" id="chatWelcomeMsg">
+                <div class="chat-avatar">🤖</div>
+                <div class="chat-bubble">
+                  Hi there! 👋 I'm your AI renovation assistant powered by <strong>Nano Banana Pro</strong>. I can help
+                  you
+                  with design ideas, material recommendations, cost estimates, and more. What room are you looking to
+                  renovate?
+                </div>
+              </div>
+            </div>
+            <div class="chat-suggestions" id="chatSuggestions">
+              <button class="chat-suggestion" data-msg="What style works best for a small living room?">🏠 Small living
+                room</button>
+              <button class="chat-suggestion" data-msg="How much does a kitchen renovation cost?">💰 Kitchen
+                cost</button>
+              <button class="chat-suggestion" data-msg="Suggest a color palette for a bedroom">🎨 Bedroom
+                colors</button>
+              <button class="chat-suggestion" data-msg="What are the latest bathroom design trends?">🛁 Bath
+                trends</button>
+              <button class="chat-suggestion" data-msg="What flooring is best for high-traffic areas?">🪵 Flooring
+                guide</button>
+              <button class="chat-suggestion" data-msg="How can I renovate on a tight budget?">💪 Budget tips</button>
+              <button class="chat-suggestion" data-msg="Should I DIY or hire a contractor?">🔧 DIY vs Pro</button>
+              <button class="chat-suggestion" data-msg="What are eco-friendly renovation options?">🌱
+                Eco-friendly</button>
+            </div>
+            <div class="chat-input-area">
+              <input type="text" class="chat-input" id="chatInput"
+                placeholder="Ask me anything about home renovation...">
+              <button class="chat-send-btn" id="chatSendBtn" type="button">➤</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- End of Tool Page Chat Section -->
+    </div> <!-- End #page-tool -->
+
+    <!-- ========== PAGE: DASHBOARD ========== -->
+    <div id="page-dashboard" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <h2 class="section-title">Your <span class="gradient-text">Dashboard</span></h2>
+        <div class="dashboard-grid"
+          style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-top: 40px;">
+          <div class="analysis-card" style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🏠</div>
+            <h3>Rooms Transformed</h3>
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-blue);" id="statRooms">0</div>
+          </div>
+          <div class="analysis-card" style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">💾</div>
+            <h3>Saved Projects</h3>
+            <div style="font-size: 2.5rem; font-weight: bold; color: var(--accent-amber);" id="statProjects">0</div>
+          </div>
+          <div class="analysis-card" style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🎨</div>
+            <h3>Favorite Style</h3>
+            <div style="font-size: 1.5rem; font-weight: bold; color: var(--accent-teal); margin-top: 10px;"
+              id="statStyle">None Yet</div>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 60px;">
+          <a href="#tool" class="btn btn-primary">Start New Renovation</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: MY PROJECTS ========== -->
+    <div id="page-projects" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;">
+          <h2 class="section-title">My <span class="gradient-text">Projects</span></h2>
+          <a href="#tool" class="btn btn-primary" style="padding: 10px 20px;">+ New Project</a>
+        </div>
+        <div id="projectsGrid"
+          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+          <!-- Projects will be generated here by JS -->
+          <div class="empty-state" id="projectsEmptyState"
+            style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed var(--border-color);">
+            <div style="font-size: 4rem; margin-bottom: 20px; opacity: 0.5;">📁</div>
+            <h3 style="margin-bottom: 10px;">No projects saved yet</h3>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">Save your renovations to view them here later.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: GALLERY ========== -->
+    <div id="page-gallery" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <h2 class="section-title">Inspiration <span class="gradient-text">Gallery</span></h2>
+        <p class="section-subtitle">Browse recent transformations generated by Nano Banana Pro.</p>
+
+        <div style="display: flex; gap: 12px; margin: 40px 0; overflow-x: auto; padding-bottom: 10px;">
+          <button class="filter-btn active" data-filter="all"
+            style="padding: 8px 16px; border-radius: 20px; border: 1px solid var(--accent-blue); background: var(--accent-blue); color: white; cursor: pointer;">All
+            Rooms</button>
+          <button class="filter-btn" data-filter="living"
+            style="padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); cursor: pointer;">Living
+            Room</button>
+          <button class="filter-btn" data-filter="kitchen"
+            style="padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); cursor: pointer;">Kitchen</button>
+          <button class="filter-btn" data-filter="bedroom"
+            style="padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); background: transparent; color: var(--text-main); cursor: pointer;">Bedroom</button>
+        </div>
+
+        <div id="galleryGrid"
+          style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
+          <!-- Simulated gallery items -->
+          <div class="analysis-card gallery-item" data-category="living" style="padding: 0; overflow: hidden;">
+            <div style="position: relative; padding-top: 66%;">
+              <img src="assets/after.png"
+                style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; filter: contrast(1.1) brightness(1.1);"
+                alt="Modern Living Room">
+              <span
+                style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Modern
+                Minimalist</span>
+            </div>
+            <div style="padding: 20px;">
+              <h4 style="margin-bottom: 8px;">Urban Loft Conversion</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Transformed a dark space into
+                a bright, airy modern living area.</p>
+              <a href="#tool" class="btn btn-outline"
+                style="width: 100%; text-align: center; font-size: 0.9rem; padding: 8px;">Try This Style</a>
+            </div>
+          </div>
+
+          <div class="analysis-card gallery-item" data-category="living" style="padding: 0; overflow: hidden;">
+            <div style="position: relative; padding-top: 66%;">
+              <img src="assets/after.png"
+                style="position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; filter: sepia(0.3) contrast(1.2);"
+                alt="Industrial Living Room">
+              <span
+                style="position: absolute; top: 12px; right: 12px; background: rgba(0,0,0,0.7); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem;">Industrial</span>
+            </div>
+            <div style="padding: 20px;">
+              <h4 style="margin-bottom: 8px;">Downtown Studio</h4>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Exposed brick emulation with
+                warm leather tones.</p>
+              <a href="#tool" class="btn btn-outline"
+                style="width: 100%; text-align: center; font-size: 0.9rem; padding: 8px;">Try This Style</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: ROOM PLANNER ========== -->
+    <div id="page-roomplanner" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <div class="page-header-row">
+          <div>
+            <span class="section-label">Layout Builder</span>
+            <h2 class="section-title">Room <span class="gradient-text">Planner</span></h2>
+            <p class="section-subtitle">Drag and drop furniture onto your floor plan. Set room dimensions and export
+              your layout as an image.</p>
+          </div>
+        </div>
+        <div id="roomPlannerContainer" style="margin-top: 30px; min-height: 600px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: MATERIALS LIBRARY ========== -->
+    <div id="page-materials" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <span class="section-label">Material Catalog</span>
+        <h2 class="section-title">Materials <span class="gradient-text">Library</span></h2>
+        <p class="section-subtitle">Browse, compare, and pick materials for every surface. Prices localized to your
+          country.</p>
+        <div id="materialsContainer" style="margin-top: 30px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: CONTRACTORS ========== -->
+    <div id="page-contractors" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <span class="section-label">Find Professionals</span>
+        <h2 class="section-title">Contractor <span class="gradient-text">Finder</span></h2>
+        <p class="section-subtitle">Browse verified renovation professionals near you. Filter by specialty and get
+          quotes.</p>
+        <div class="contractor-filters" style="display:flex;gap:12px;flex-wrap:wrap;margin:30px 0;">
+          <button class="cf-filter active" data-spec="all">All</button>
+          <button class="cf-filter" data-spec="general">🔨 General</button>
+          <button class="cf-filter" data-spec="kitchen">🍳 Kitchen</button>
+          <button class="cf-filter" data-spec="bathroom">🛁 Bathroom</button>
+          <button class="cf-filter" data-spec="painting">🎨 Painting</button>
+          <button class="cf-filter" data-spec="flooring">🪵 Flooring</button>
+          <button class="cf-filter" data-spec="electrical">⚡ Electrical</button>
+          <button class="cf-filter" data-spec="plumbing">🔧 Plumbing</button>
+        </div>
+        <div id="contractorsGrid"
+          style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: TIMELINE ========== -->
+    <div id="page-timeline" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <span class="section-label">Project Schedule</span>
+        <h2 class="section-title">Timeline <span class="gradient-text">Builder</span></h2>
+        <p class="section-subtitle">Plan your renovation phases with our interactive Gantt-style timeline. Drag to
+          adjust durations.</p>
+        <div id="timelineContainer" style="margin-top: 30px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== PAGE: AR PREVIEW ========== -->
+    <div id="page-arpreview" class="spa-page section" style="display: none; padding-top: 100px;">
+      <div class="container">
+        <span class="section-label">Augmented Reality</span>
+        <h2 class="section-title">AR <span class="gradient-text">Preview</span></h2>
+        <p class="section-subtitle">Place furniture into your room photo. Drag, scale, and visualize before buying.</p>
+        <div id="arPreviewContainer" style="margin-top: 30px;"></div>
+      </div>
+    </div>
+
+  </main> <!-- End #app-container -->
+
+  <!-- ==================== Command Palette (Ctrl+K) ==================== -->
+  <div class="cmd-palette-overlay" id="cmdPalette" style="display:none;">
+    <div class="cmd-palette">
+      <div class="cmd-palette-header">
+        <span class="cmd-icon">⌘</span>
+        <input type="text" id="cmdInput" placeholder="Type a command or page name..." autocomplete="off">
+        <kbd>ESC</kbd>
+      </div>
+      <div class="cmd-palette-results" id="cmdResults"></div>
+    </div>
+  </div>
+
+  <!-- ==================== Keyboard Shortcuts Modal ==================== -->
+  <div class="shortcuts-overlay" id="shortcutsModal" style="display:none;">
+    <div class="shortcuts-panel">
+      <div class="shortcuts-header">
+        <h3>⌨️ Keyboard Shortcuts</h3><button id="shortcutsClose" class="shortcuts-close">✕</button>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-item"><kbd>D</kbd><span>Dashboard</span></div>
+        <div class="shortcut-item"><kbd>T</kbd><span>Design Tool</span></div>
+        <div class="shortcut-item"><kbd>P</kbd><span>My Projects</span></div>
+        <div class="shortcut-item"><kbd>G</kbd><span>Gallery</span></div>
+        <div class="shortcut-item"><kbd>R</kbd><span>Room Planner</span></div>
+        <div class="shortcut-item"><kbd>M</kbd><span>Materials</span></div>
+        <div class="shortcut-item"><kbd>Ctrl+K</kbd><span>Command Palette</span></div>
+        <div class="shortcut-item"><kbd>?</kbd><span>This Panel</span></div>
+        <div class="shortcut-item"><kbd>Esc</kbd><span>Close Overlay</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Lightbox ==================== -->
+  <div class="lightbox-overlay" id="lightbox" style="display:none;">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+    <button class="lightbox-prev" id="lightboxPrev">❮</button>
+    <button class="lightbox-next" id="lightboxNext">❯</button>
+    <img id="lightboxImg" src="" alt="Full-size preview">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+
+  <!-- ==================== Onboarding Tour ==================== -->
+  <div class="onboarding-overlay" id="onboardingOverlay" style="display:none;">
+    <div class="onboarding-card" id="onboardingCard">
+      <div class="onboarding-step-indicator" id="onboardingSteps"></div>
+      <div class="onboarding-icon" id="onboardingIcon"></div>
+      <h3 id="onboardingTitle"></h3>
+      <p id="onboardingDesc"></p>
+      <div class="onboarding-actions">
+        <button id="onboardingSkip" class="btn btn-outline">Skip Tour</button>
+        <button id="onboardingNext" class="btn btn-primary">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== Footer ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <div class="logo-icon">🏠</div>
+            <span>Renovate<span class="logo-text-highlight">AI</span></span>
+          </a>
+          <p>Transforming homes with the power of artificial intelligence. Visualize, plan, and budget your dream
+            renovation — all in one place.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#styles">Styles</a></li>
+            <li><a href="#estimator">Cost Estimator</a></li>
+            <li><a href="#chat">AI Chat</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Tutorials</a></li>
+            <li><a href="#">API Docs</a></li>
+            <li><a href="#">Gallery</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 RenovateAI. Powered by Nano Banana Pro.</span>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="image-analyzer.js"></script>
+  <script src="chat-engine.js"></script>
+  <script src="ai-image-generator.js"></script>
+  <script src="room-planner.js"></script>
+  <script src="materials-library.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
